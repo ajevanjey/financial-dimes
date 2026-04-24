@@ -1,1 +1,15 @@
 // Specific CSS for your home-page
+.hero {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+
+  .display-4 {
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .badge.bg-primary-subtle {
+    padding: 0.5rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+  }
+}

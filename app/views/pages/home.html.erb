@@ -1,2 +1,65 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<section class="hero py-5 py-lg-6 bg-white border-bottom">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <span class="badge bg-primary-subtle text-primary fw-semibold mb-3">
+          <i class="fa-solid fa-sparkles me-1"></i> AI Assistant for Investors
+        </span>
+        <h1 class="display-4 fw-bold mb-3">
+          Spot stock opportunities. <span class="text-primary">Save what matters.</span>
+        </h1>
+        <p class="lead text-muted mb-4">
+          FinancialDimes is your personal AI research assistant. Ask plain-English questions
+          about the markets, get fresh data on the tickers worth watching, and build a
+          watchlist that grows with your investment thesis.
+        </p>
+        <div class="d-flex flex-wrap gap-2">
+          <% if user_signed_in? %>
+            <span class="btn btn-primary btn-lg disabled">
+              <i class="fa-solid fa-hourglass-half me-1"></i> Watchlist coming soon
+            </span>
+            <%= button_to "Log out", destroy_user_session_path, method: :delete, class: "btn btn-outline-secondary btn-lg" %>
+          <% else %>
+            <%= link_to "Get started — it's free", new_user_registration_path, class: "btn btn-primary btn-lg" %>
+            <%= link_to "Log in", new_user_session_path, class: "btn btn-outline-secondary btn-lg" %>
+          <% end %>
+        </div>
+        <p class="small text-muted mt-3 mb-0">
+          <i class="fa-solid fa-circle-info me-1"></i>
+          For research and educational use only. Not financial advice.
+        </p>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-4">
+            <h6 class="text-uppercase text-muted small fw-bold mb-3">What you can do</h6>
+            <ul class="list-unstyled mb-0">
+              <li class="d-flex mb-3">
+                <span class="me-3 text-primary"><i class="fa-solid fa-comments fa-lg"></i></span>
+                <div>
+                  <div class="fw-semibold">Chat with an AI market analyst</div>
+                  <div class="text-muted small">Ask anything from "What's moving today?" to "Compare NVDA vs AMD."</div>
+                </div>
+              </li>
+              <li class="d-flex mb-3">
+                <span class="me-3 text-primary"><i class="fa-solid fa-bookmark fa-lg"></i></span>
+                <div>
+                  <div class="fw-semibold">Save tickers to your watchlist</div>
+                  <div class="text-muted small">One click from any AI suggestion to add a stock to your watchlist.</div>
+                </div>
+              </li>
+              <li class="d-flex">
+                <span class="me-3 text-primary"><i class="fa-solid fa-pen-to-square fa-lg"></i></span>
+                <div>
+                  <div class="fw-semibold">Track your thesis</div>
+                  <div class="text-muted small">Add notes to each stock so you remember why you're watching.</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
