@@ -1,22 +1,28 @@
-<div class="container py-4" style="max-width: 800px;">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Chat #<%= @chat.id %></h1>
-    <%= link_to "← Back", root_path, class: "btn btn-outline-secondary btn-sm" %>
+<div class="container-lg py-3 py-md-4">
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-2">
+    <h1 class="mb-0">
+      <% if @chat.title.present? %>
+        <%= @chat.title %>
+      <% else %>
+        Chat #<%= @chat.id %>
+      <% end %>
+    </h1>
+    <%= link_to "← Back to chats", chats_path, class: "btn btn-outline-secondary btn-sm" %>
   </div>
 
   <div id="messages" class="mb-4">
     <% @chat.messages.each do |message| %>
       <% if message.role == "user" %>
         <div class="d-flex justify-content-end mb-3">
-          <div class="bg-primary text-white p-3 rounded-3" style="max-width: 70%;">
+          <div class="bg-primary text-white p-3 rounded-3 shadow-sm" style="max-width: 85%;">
             <%= simple_format(message.content) %>
           </div>
         </div>
       <% else %>
         <div class="d-flex justify-content-start mb-3">
-          <div class="bg-white border p-3 rounded-3 shadow-sm" style="max-width: 70%;">
+          <div class="bg-white border p-3 rounded-3 shadow-sm" style="max-width: 85%;">
             <strong class="text-primary d-block mb-1">
-              <i class="fas fa-robot"></i> Assistant
+              <i class="fas fa-robot me-1"></i> Assistant
             </strong>
             <%= simple_format(message.content) %>
           </div>
@@ -34,7 +40,7 @@
                     required: true,
                     input_html: { rows: 3 } %>
         <div class="d-flex justify-content-end">
-          <%= f.button :submit, "Send", class: "btn btn-primary" %>
+          <%= f.button :submit, "Send", class: "btn btn-primary btn-lg" %>
         </div>
       <% end %>
     </div>

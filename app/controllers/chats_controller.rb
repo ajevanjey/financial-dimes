@@ -11,4 +11,8 @@ class ChatsController < ApplicationController
     @message = Message.new
   end
 
+  def index
+    @chats = current_user.chats.order(created_at: :desc)
+  end
+
 end
