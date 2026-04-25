@@ -1,0 +1,22 @@
+<%= simple_form_for @stock do |f| %>
+  <% if @stock.errors.any? %>
+    <div class="alert alert-danger">
+      <strong>Couldn't save:</strong>
+      <ul class="mb-0">
+        <% @stock.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.input :ticker, label: "Ticker symbol", placeholder: "e.g. NVDA, AAPL, TSLA", input_html: { class: "text-uppercase" } %>
+  <%= f.input :company_name, label: "Company name", placeholder: "e.g. NVIDIA Corporation" %>
+  <%= f.input :target_price, label: "Target price (USD)", placeholder: "e.g. 150.00" %>
+  <%= f.input :notes, label: "Notes", as: :text, input_html: { rows: 4, placeholder: "Why are you watching this stock?" } %>
+
+  <div class="d-flex gap-2 mt-3">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", stocks_path, class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

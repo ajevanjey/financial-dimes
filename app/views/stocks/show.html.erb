@@ -1,0 +1,34 @@
+<div class="container my-5" style="max-width: 700px;">
+  <%= link_to "← Back to watchlist", stocks_path, class: "text-decoration-none small text-muted" %>
+
+  <div class="d-flex justify-content-between align-items-center mt-3 mb-4">
+    <div>
+      <h1 class="mb-0"><%= @stock.ticker.upcase %></h1>
+      <% if @stock.company_name.present? %>
+        <p class="text-muted mb-0"><%= @stock.company_name %></p>
+      <% end %>
+    </div>
+    <div class="d-flex gap-2">
+      <%= link_to "Edit", edit_stock_path(@stock), class: "btn btn-outline-secondary" %>
+      <%= button_to "Remove", stock_path(@stock), method: :delete, class: "btn btn-outline-danger", form: { class: "d-inline", data: { turbo_confirm: "Remove #{@stock.ticker.upcase} from your watchlist?" } } %>
+    </div>
+  </div>
+
+  <% if @stock.target_price.present? %>
+    <div class="card mb-3">
+      <div class="card-body">
+        <small class="text-muted text-uppercase">Target price</small>
+        <div class="h3 mb-0"><%= number_to_currency(@stock.target_price) %></div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @stock.notes.present? %>
+    <div class="card">
+      <div class="card-body">
+        <small class="text-muted text-uppercase">Notes</small>
+        <p class="mb-0 mt-2"><%= simple_format(@stock.notes) %></p>
+      </div>
+    </div>
+  <% end %>
+</div>

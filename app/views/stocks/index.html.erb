@@ -1,0 +1,40 @@
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>My Watchlist</h1>
+    <%= link_to "+ Add a stock", new_stock_path, class: "btn btn-primary" %>
+  </div>
+
+  <% if @stocks.any? %>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Ticker</th>
+          <th>Company</th>
+          <th>Target price</th>
+          <th>Notes</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @stocks.each do |stock| %>
+          <tr>
+            <td><strong><%= stock.ticker.upcase %></strong></td>
+            <td><%= stock.company_name %></td>
+            <td><%= number_to_currency(stock.target_price) if stock.target_price %></td>
+            <td><%= truncate(stock.notes, length: 50) %></td>
+            <td class="text-end">
+              <%= link_to "View", stock_path(stock), class: "btn btn-sm btn-outline-secondary" %>
+              <%= link_to "Edit", edit_stock_path(stock), class: "btn btn-sm btn-outline-secondary" %>
+              <%= button_to "Remove", stock_path(stock), method: :delete, class: "btn btn-sm btn-outline-danger", form: { class: "d-inline", data: { turbo_confirm: "Remove #{stock.ticker.upcase} from your watchlist?" } } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="text-center py-5">
+      <p class="text-muted">You're not watching any stocks yet.</p>
+      <%= link_to "Add your first stock", new_stock_path, class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
