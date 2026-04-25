@@ -1,16 +1,18 @@
 class MessagesController < ApplicationController
   before_action :authenticate_user!
 
+  SYSTEM_PROMPT = "You are a helpful financial assistant specialized in stock analysis. Provide clear, concise advice and explain financial concepts in simple terms."
+
   def create
     @chat = current_user.chats.find(params[:chat_id])
     @message = @chat.messages.new(message_params)
     @message.role = "user"
 
     if @message.save
-      # Appel à l'IA avec le contenu du message du user
-      response = RubyLLM.chat(model: "gpt-4o-mini").ask(@message.content)
+      response = RubyLLM.chat(model: "gpt-4o-mini")
+        .with_instructions(SYSTEM_PROMPT)
+        .ask(@message.content)
 
-      # Sauvegarde de la réponse comme nouveau message avec role: "assistant"
       @chat.messages.create(role: "assistant", content: response.content)
 
       redirect_to chat_path(@chat)
