@@ -15,4 +15,10 @@ class ChatsController < ApplicationController
     @chats = current_user.chats.order(created_at: :desc)
   end
 
+  def destroy
+    @chat = current_user.chats.find(params[:id])
+    @chat.destroy
+    redirect_to chats_path, notice: "Chat supprimé"
+  end
+
 end
