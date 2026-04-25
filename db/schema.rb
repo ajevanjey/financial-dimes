@@ -40,6 +40,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_24_001754) do
     t.decimal "target_price", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index "lower((ticker)::text)", name: "index_stocks_on_lower_ticker", unique: true
   end
 
   create_table "users", force: :cascade do |t|

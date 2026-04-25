@@ -1,0 +1,17 @@
+<div class="container">
+  <h1>Chat #<%= @chat.id %></h1>
+
+  <div id="messages" class="mb-4">
+    <% @chat.messages.each do |message| %>
+      <div class="mb-2">
+        <strong><%= message.role %>:</strong>
+        <%= simple_format(message.content) %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= simple_form_for [@chat, @message] do |f| %>
+    <%= f.input :content, label: "Your message", required: true %>
+    <%= f.button :submit, "Submit", class: "btn btn-primary" %>
+  <% end %>
+</div>
