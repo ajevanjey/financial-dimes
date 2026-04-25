@@ -1,10 +1,21 @@
 // Define variables for your color scheme
 
-// For example:
-$red: #FD1015;
-$blue: #0D6EFD;
-$yellow: #FFC65A;
-$orange: #E67E22;
-$green: #1EDD88;
-$gray: #0E0000;
+// Brand palette — Bloomberg/terminal inspired (money vibes)
+$fd-black:        #0A0A0A;  // primary background
+$fd-black-soft:   #141414;  // cards / raised surfaces
+$fd-border:       #2A2A2A;  // subtle dividers
+$fd-green:        #00FF88;  // bright accent (the "money" green)
+$fd-green-soft:   #1EDD88;  // secondary green for hover / highlights
+$fd-green-dim:    #0F2E1F;  // dark green tint for backgrounds
+$fd-red:          #FD1015;  // down / danger indicators
+$fd-white:        #FFFFFF;
+$fd-text-muted:   #A0A0A0;  // secondary text on dark bg
+
+// Legacy variables (keep — used by _bootstrap_variables.scss)
+$red:        $fd-red;
+$blue:       #0D6EFD;
+$yellow:     #FFC65A;
+$orange:     #E67E22;
+$green:      $fd-green-soft;
+$gray:       #0E0000;
 $light-gray: #F4F4F4;
