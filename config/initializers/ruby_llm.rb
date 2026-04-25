@@ -20,5 +20,7 @@
 # See https://github.com/crmne/ruby_llm for full docs.
 
 RubyLLM.configure do |config|
-  config.gemini_api_key = ENV.fetch("GEMINI_API_KEY", nil)
+  config.openai_api_key = ENV["GITHUB_TOKEN"]
+  config.openai_api_base = "https://models.inference.ai.azure.com"
+  config.default_model = "gpt-4o-mini"
 end
