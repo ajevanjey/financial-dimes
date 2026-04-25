@@ -1,24 +1,32 @@
 # config/initializers/ruby_llm.rb
 #
-# Configures the ruby_llm gem to talk to Google Gemini via the free tier.
+# Configures the ruby_llm gem to talk to OpenAI models hosted on Azure,
+# accessed for free via GitHub Models. Authentication uses a GitHub
+# Personal Access Token (PAT) with the "Models: Read only" scope.
 #
-# The API key lives in:
+# The PAT lives in:
 #   - .env (development, gitignored — never commit this)
-#   - Heroku config vars (production, set with `heroku config:set GEMINI_API_KEY=...`)
+#   - Heroku config vars (production, set with `heroku config:set GITHUB_TOKEN=...`)
 #
 # Usage from anywhere in the app:
 #
-#   chat = RubyLLM.chat(model: "gemini-2.0-flash")
+#   chat = RubyLLM.chat               # uses the default model (gpt-4o-mini)
 #   response = chat.ask("What's the sentiment around NVDA this week?")
 #   puts response.content
 #
-# Models on the Gemini free tier (cheapest first):
-#   - gemini-2.0-flash      (recommended default — fast, generous free tier)
-#   - gemini-2.0-flash-lite (lightest)
-#   - gemini-1.5-flash      (older but stable)
+# Optionally specify a model:
 #
-# See https://github.com/crmne/ruby_llm for full docs.
+#   chat = RubyLLM.chat(model: "gpt-4o")
+#
+# How to get a token:
+#   1. https://github.com/settings/tokens → Fine-grained tokens → Generate new token
+#   2. No repo access needed
+#   3. Account permissions → Models → Read only
+#   4. Generate, copy, paste into .env
+#
+# See https://github.com/marketplace/models for available models.
 
 RubyLLM.configure do |config|
-  config.gemini_api_key = ENV.fetch("GEMINI_API_KEY", nil)
+  config.openai_api_key  = ENV.fetch("GITHUB_TOKEN", nil)
+  config.openai_api_base = "https://models.inference.ai.azure.com"
 end
