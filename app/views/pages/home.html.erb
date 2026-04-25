@@ -85,7 +85,7 @@
 
           <div class="fd-hero-ctas">
             <% if user_signed_in? %>
-              <%= link_to "Open the chat", chats_path, class: "fd-btn fd-btn-primary" %>
+              <%= button_to "Start a new chat", chats_path, method: :post, class: "fd-btn fd-btn-primary", form: { class: "fd-btn-form" } %>
             <% else %>
               <%= link_to "Start chatting — free", new_user_registration_path, class: "fd-btn fd-btn-primary" %>
             <% end %>
@@ -317,10 +317,10 @@
     <div class="container text-center">
       <h2>Free. Forever. For everyone.</h2>
       <p>No card. No email tricks. Just open the chat and start asking.</p>
-      <% unless user_signed_in? %>
-        <%= link_to "Start chatting now", new_user_registration_path, class: "fd-btn fd-btn-primary fd-btn-lg" %>
+      <% if user_signed_in? %>
+        <%= button_to "Start a new chat", chats_path, method: :post, class: "fd-btn fd-btn-primary fd-btn-lg", form: { class: "fd-btn-form" } %>
       <% else %>
-        <%= link_to "Open the chat", chats_path, class: "fd-btn fd-btn-primary fd-btn-lg" %>
+        <%= link_to "Start chatting now", new_user_registration_path, class: "fd-btn fd-btn-primary fd-btn-lg" %>
       <% end %>
     </div>
   </section>

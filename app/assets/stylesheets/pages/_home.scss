@@ -315,6 +315,12 @@
     font-size: 1rem;
   }
 
+  // Strip the default margin from the <form> that button_to wraps around the button
+  .fd-btn-form {
+    display: inline-block;
+    margin: 0;
+  }
+
   // ---------- iPHONE FLOATING DEVICE ----------
   .fd-hero-device-col {
     perspective: 1400px;
