@@ -1,0 +1,52 @@
+<%#
+  Financial Dimes brand mark.
+  Green rounded square + dark coin + minimal robot-bust silhouette
+  (a "bot president" stamped on a dime).
+
+  Optional locals:
+    size:  CSS size (e.g. "32px"). Default leaves sizing to surrounding element.
+    class: extra CSS class to apply to the SVG.
+%>
+<svg class="fd-mark <%= local_assigns[:class] %>"
+     style="<%= "width:#{local_assigns[:size]};height:#{local_assigns[:size]};" if local_assigns[:size] %>"
+     viewBox="0 0 32 32"
+     xmlns="http://www.w3.org/2000/svg"
+     aria-hidden="true">
+
+  <%# Outer green rounded square — the brand chip %>
+  <rect width="32" height="32" rx="6" fill="#00FF88"/>
+
+  <%# Dark coin inset within the square %>
+  <circle cx="16" cy="16" r="11.5" fill="#0A0A0A"/>
+
+  <%# Subtle inner rim — gives the coin a "minted" feel %>
+  <circle cx="16" cy="16" r="11.5" fill="none" stroke="#00FF88" stroke-width="0.4" opacity="0.22"/>
+
+  <%# ----- The bot bust silhouette, struck on the coin ----- %>
+
+  <%# Antenna stem + tip %>
+  <rect x="15.4" y="6.5" width="1.2" height="3.5" rx="0.6" fill="#00FF88"/>
+  <circle cx="16" cy="6" r="1.15" fill="#00FF88"/>
+
+  <%# Head — rounded square %>
+  <rect x="11" y="9.8" width="10" height="9" rx="2.2" fill="#00FF88"/>
+
+  <%# Visor / eye slit (dark) %>
+  <rect x="12.8" y="12.4" width="6.4" height="1.9" rx="0.95" fill="#0A0A0A"/>
+
+  <%# Tiny visor highlight, the "iris" of the bot %>
+  <rect x="14.4" y="12.9" width="1.6" height="0.9" rx="0.45" fill="#00FF88" opacity="0.85"/>
+
+  <%# Mouth / speaker grill (dark slit) %>
+  <rect x="13.6" y="15.7" width="4.8" height="0.8" rx="0.4" fill="#0A0A0A"/>
+
+  <%# Neck (bridges head to bust) %>
+  <rect x="14.2" y="18" width="3.6" height="2.4" fill="#00FF88"/>
+
+  <%# Shoulders / bust silhouette %>
+  <path d="M 7.5 25.8
+           Q 8 20.8, 12.5 20
+           L 19.5 20
+           Q 24 20.8, 24.5 25.8 Z"
+        fill="#00FF88"/>
+</svg>

@@ -1,1 +1,891 @@
 // Specific CSS for your home-page
+// TBPN-inspired modern minimal: pure black, single bright green accent, big confident type.
+// Everything is scoped under .home-wrapper so it doesn't leak into other pages.
+
+.home-wrapper {
+  background: #000;
+  color: $fd-white;
+  font-family: $body-font;
+  font-feature-settings: "tnum" 1, "ss01" 1;
+  font-weight: 400;
+  position: relative;
+
+  // Pull full-bleed regardless of layout padding
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  width: 100vw;
+  overflow-x: hidden;
+
+  // Make sure all major sections paint above the ambient stream
+  > nav,
+  > section { position: relative; z-index: 2; }
+
+  h1, h2, h3, h4, h5 {
+    font-family: $headers-font;
+    color: $fd-white;
+    letter-spacing: -0.03em;
+    font-weight: 800;
+  }
+
+  p {
+    color: $fd-text-muted;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  .container {
+    max-width: 1180px;
+  }
+
+  // ---------- AMBIENT DATA STREAM ----------
+  .fd-stream {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: clamp(170px, 14vw, 240px);
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+    display: flex;
+    gap: 0.5rem;
+    padding: 0 1rem;
+    opacity: 0.22;
+    // Fade the stream at the top and bottom so it doesn't end abruptly
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%);
+  }
+
+  .fd-stream-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.78rem;
+    line-height: 1;
+    will-change: transform;
+  }
+
+  // Static caveat label so visitors know the stream isn't live data
+  .fd-stream-caveat {
+    position: absolute;
+    top: 1rem;
+    left: 1.25rem;
+    font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.65rem;
+    color: $fd-text-muted;
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+    z-index: 1;
+    // Keep this above the mask fade so it stays readable
+    background: rgba(0, 0, 0, 0.35);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+
+  .fd-stream-col-a { animation: fd-stream-up 60s linear infinite; }
+  .fd-stream-col-b { animation: fd-stream-up 90s linear infinite; }
+
+  @keyframes fd-stream-up {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-50%); }
+  }
+
+  .fd-stream-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.4rem;
+    padding: 0.45rem 0.6rem;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+    white-space: nowrap;
+  }
+
+  .fd-stream-tkr {
+    color: $fd-text-muted;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .fd-stream-up   { color: $fd-green; font-weight: 500; }
+  .fd-stream-down { color: $fd-red;   font-weight: 500; }
+
+  // Hide the stream on tablet/mobile to keep things clean
+  @media (max-width: 1024px) {
+    .fd-stream { display: none; }
+  }
+
+  // ---------- TOP NAV ----------
+  .fd-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid $fd-border;
+  }
+
+  .fd-nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 1.5rem;
+  }
+
+  .fd-nav-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: $fd-white;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+
+    &:hover { color: $fd-white; }
+  }
+
+  .fd-nav-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+
+    .fd-mark { width: 100%; height: 100%; display: block; }
+  }
+
+  .fd-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .fd-nav-link {
+    color: $fd-text-muted;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.15s ease;
+
+    &:hover { color: $fd-white; }
+  }
+
+  // ---------- HERO ----------
+  .fd-hero {
+    padding: 6rem 1.5rem 5rem;
+    background: transparent; // let the ambient stream show through
+    position: relative;
+    overflow: hidden; // contain glow + grid + decorative "+" within the hero
+    border-bottom: 1px solid $fd-border;
+
+    // Subtle dotted grid texture (TBPN-y)
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 24px 24px;
+      mask-image: radial-gradient(ellipse at 50% 30%, rgba(0,0,0,0.6), transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at 50% 30%, rgba(0,0,0,0.6), transparent 70%);
+      pointer-events: none;
+    }
+
+    // Decorative "+" markers in corners
+    &::after {
+      content: "+";
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      color: rgba(255,255,255,0.15);
+      font-size: 1.4rem;
+      font-weight: 300;
+      pointer-events: none;
+    }
+
+    > .container { position: relative; z-index: 1; }
+  }
+
+  .fd-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: $fd-white;
+    background: transparent;
+    border: 1px solid $fd-border;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    margin-bottom: 2.5rem;
+  }
+
+  .fd-pulse {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: $fd-green;
+    box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.6);
+    animation: fd-pulse 2s infinite;
+  }
+
+  @keyframes fd-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.55); }
+    70%  { box-shadow: 0 0 0 8px rgba(0, 255, 136, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
+  }
+
+  .fd-hero-title {
+    font-size: clamp(2.6rem, 6.5vw, 5.5rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+    margin-bottom: 2rem;
+    max-width: 900px;
+  }
+
+  .fd-accent {
+    color: $fd-green;
+    font-weight: 800;
+  }
+
+  .fd-hero-subtitle {
+    font-size: 1.1rem;
+    max-width: 580px;
+    margin-bottom: 2.5rem;
+    color: $fd-text-muted;
+    font-weight: 400;
+  }
+
+  // ---------- BUTTONS ----------
+  .fd-hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 5rem;
+  }
+
+  .fd-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.95rem 1.6rem;
+    font-family: $body-font;
+    font-weight: 600;
+    font-size: 0.92rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    border: 1px solid transparent;
+    letter-spacing: -0.01em;
+
+    &:hover { transform: translateY(-1px); }
+  }
+
+  .fd-btn-primary {
+    background: $fd-green;
+    color: #000;
+
+    &:hover {
+      background: lighten($fd-green, 4%);
+      color: #000;
+    }
+  }
+
+  .fd-btn-ghost {
+    background: transparent;
+    color: $fd-white;
+    border-color: $fd-border;
+
+    &:hover {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.4);
+      color: $fd-white;
+    }
+  }
+
+  .fd-btn-lg {
+    padding: 1.15rem 2.2rem;
+    font-size: 1rem;
+  }
+
+  // ---------- iPHONE FLOATING DEVICE ----------
+  .fd-hero-device-col {
+    perspective: 1400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    // NOTE: no `transform-style: preserve-3d` here — that caused the rotated
+    // phone to intersect with the glow plane and bleed through the screen.
+    // Flat rendering keeps the phone fully opaque over the glow.
+  }
+
+  // Standalone glow element sitting strictly behind the device.
+  .fd-iphone-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 340px;
+    height: 340px;
+    background: radial-gradient(circle,
+                rgba(0, 255, 136, 0.45) 0%,
+                transparent 65%);
+    filter: blur(90px);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .fd-iphone {
+    width: 100%;
+    max-width: 320px;
+    position: relative;
+    z-index: 1;
+    transform: rotateY(-22deg) rotateX(-4deg) rotateZ(6deg);
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    filter:
+      drop-shadow(0 35px 60px rgba(0, 255, 136, 0.28))
+      drop-shadow(0 60px 100px rgba(0, 0, 0, 0.8));
+
+    &:hover {
+      transform: rotateY(-10deg) rotateX(-2deg) rotateZ(2deg);
+    }
+  }
+
+  .fd-iphone-frame {
+    background: linear-gradient(135deg, #2c2c2c 0%, #161616 50%, #0a0a0a 100%);
+    border-radius: 44px;
+    padding: 11px;
+    position: relative;
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+      inset 0 0 0 3px #0a0a0a,
+      inset 0 0 0 4px #1f1f1f;
+  }
+
+  .fd-iphone-island {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 86px;
+    height: 26px;
+    background: #000;
+    border-radius: 13px;
+    z-index: 3;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  }
+
+  .fd-iphone-screen {
+    background: #0a0a0a;
+    border-radius: 34px;
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 9 / 18;
+    display: flex;
+    flex-direction: column;
+  }
+
+  // ---------- CHAT MOCKUP ----------
+  // Scoped twice: outside a phone (full card) vs inside the phone (fills the screen)
+  .fd-chat-mockup {
+    max-width: 580px;
+    border: 1px solid $fd-border;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #0A0A0A 0%, #050505 100%);
+    overflow: hidden;
+    box-shadow: 0 30px 80px -30px rgba(0, 255, 136, 0.15);
+  }
+
+  // When the chat mockup lives inside the iPhone, drop the outer card chrome
+  .fd-iphone-screen .fd-chat-mockup {
+    max-width: none;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    padding-top: 50px; // breathing room below the dynamic island
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fd-iphone-screen .fd-chat-body {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .fd-chat-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid $fd-border;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .fd-chat-avatar {
+    width: 36px;
+    height: 36px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 7px; // matches the rounded square on the mark
+    box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.55);
+    animation: fd-mark-pulse 2.4s ease-out infinite;
+
+    .fd-mark { width: 100%; height: 100%; display: block; }
+  }
+
+  @keyframes fd-mark-pulse {
+    0%   { box-shadow: 0 0 0 0   rgba(0, 255, 136, 0.55); }
+    70%  { box-shadow: 0 0 0 12px rgba(0, 255, 136, 0); }
+    100% { box-shadow: 0 0 0 0   rgba(0, 255, 136, 0); }
+  }
+
+  .fd-chat-name {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: $fd-white;
+    letter-spacing: -0.01em;
+  }
+
+  .fd-chat-status {
+    font-size: 0.72rem;
+    color: $fd-text-muted;
+    font-family: "JetBrains Mono", "SF Mono", Menlo, monospace;
+  }
+
+  .fd-chat-body {
+    padding: 1.25rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .fd-chat-msg {
+    display: flex;
+
+    &-bot  { justify-content: flex-start; }
+    &-user { justify-content: flex-end; }
+  }
+
+  .fd-chat-bubble {
+    max-width: 85%;
+    padding: 0.7rem 1rem;
+    border-radius: 14px;
+    font-size: 0.92rem;
+    line-height: 1.5;
+
+    .fd-chat-msg-bot & {
+      background: rgba(255, 255, 255, 0.05);
+      color: $fd-white;
+      border-top-left-radius: 4px;
+    }
+
+    .fd-chat-msg-user & {
+      background: $fd-green;
+      color: #000;
+      font-weight: 500;
+      border-top-right-radius: 4px;
+    }
+  }
+
+  .fd-chat-tkr {
+    font-family: "JetBrains Mono", "SF Mono", Menlo, monospace;
+    font-size: 0.85rem;
+    background: rgba(0, 255, 136, 0.12);
+    color: $fd-green;
+    padding: 0.1rem 0.45rem;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  // Rich snapshot card (bot's structured response)
+  .fd-chat-snapshot {
+    max-width: 92%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid $fd-border;
+    border-radius: 14px;
+    border-top-left-radius: 4px;
+    padding: 1rem 1.1rem;
+  }
+
+  .fd-chat-snapshot-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px dashed $fd-border;
+  }
+
+  .fd-chat-tkr-lg {
+    font-family: "JetBrains Mono", "SF Mono", Menlo, monospace;
+    font-size: 1.05rem;
+    color: $fd-white;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .fd-chat-sentiment {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    letter-spacing: 0.03em;
+
+    &-bull {
+      background: rgba(0, 255, 136, 0.12);
+      color: $fd-green;
+      border: 1px solid rgba(0, 255, 136, 0.3);
+    }
+
+    &-bear {
+      background: rgba(253, 16, 21, 0.12);
+      color: $fd-red;
+      border: 1px solid rgba(253, 16, 21, 0.3);
+    }
+  }
+
+  .fd-chat-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.9rem;
+
+    li {
+      position: relative;
+      padding-left: 1.1rem;
+      margin-bottom: 0.4rem;
+      font-size: 0.88rem;
+      color: $fd-white;
+      line-height: 1.5;
+
+      &::before {
+        content: "›";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: $fd-green;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .fd-chat-sources {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    padding-top: 0.7rem;
+    border-top: 1px dashed $fd-border;
+  }
+
+  .fd-chat-sources-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: $fd-text-muted;
+    margin-right: 0.3rem;
+  }
+
+  .fd-chat-source-chip {
+    font-size: 0.75rem;
+    color: $fd-text-muted;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid $fd-border;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: color 0.15s, border-color 0.15s;
+
+    &:hover {
+      color: $fd-green;
+      border-color: rgba(0, 255, 136, 0.4);
+    }
+
+    &::after {
+      content: " ↗";
+      opacity: 0.6;
+    }
+  }
+
+  // Disabled input bar at the bottom of the mockup
+  .fd-chat-input {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.85rem 1rem;
+    border-top: 1px solid $fd-border;
+    background: rgba(255, 255, 255, 0.02);
+
+    input {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid $fd-border;
+      border-radius: 8px;
+      padding: 0.6rem 0.9rem;
+      color: $fd-white;
+      font-family: $body-font;
+      font-size: 0.88rem;
+
+      &::placeholder { color: $fd-text-muted; }
+      &:disabled { cursor: not-allowed; opacity: 0.85; }
+    }
+  }
+
+  .fd-chat-send {
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 8px;
+    background: $fd-green;
+    color: #000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    svg { width: 16px; height: 16px; }
+  }
+
+  // ---------- TICKER / WATCHLIST PREVIEW ----------
+  .fd-ticker {
+    border: 1px solid $fd-border;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #0A0A0A;
+    font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+    max-width: 900px;
+  }
+
+  .fd-ticker-label {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.72rem;
+    color: $fd-text-muted;
+    border-bottom: 1px solid $fd-border;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+  }
+
+  .fd-ticker-row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .fd-ticker-item {
+    flex: 1 1 calc(100% / 6);
+    min-width: 140px;
+    padding: 1rem 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-right: 1px solid $fd-border;
+    font-size: 0.88rem;
+
+    &:last-child { border-right: none; }
+  }
+
+  .fd-tkr-sym {
+    color: $fd-text-muted;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .fd-tkr-up   { color: $fd-green; font-weight: 600; }
+  .fd-tkr-down { color: $fd-red;   font-weight: 600; }
+
+  // ---------- SHARED SECTION ----------
+  .fd-section {
+    padding: 7rem 1.5rem;
+    position: relative;
+    background: #000; // hides ambient stream behind these sections
+  }
+
+  .fd-section-alt {
+    background: #050505;
+    border-top: 1px solid $fd-border;
+    border-bottom: 1px solid $fd-border;
+  }
+
+  .fd-section-head {
+    text-align: left;
+    margin-bottom: 4rem;
+    max-width: 700px;
+  }
+
+  .fd-kicker {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: $fd-green;
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 1rem;
+      height: 1px;
+      background: $fd-green;
+    }
+  }
+
+  .fd-section-title {
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+
+  // ---------- STEP CARDS ----------
+  .fd-step-card {
+    background: transparent;
+    border: 1px solid $fd-border;
+    border-radius: 14px;
+    padding: 2.25rem 2rem;
+    height: 100%;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    position: relative;
+
+    &::after {
+      content: "+";
+      position: absolute;
+      top: 1rem;
+      right: 1.25rem;
+      color: rgba(255,255,255,0.2);
+      font-weight: 300;
+      font-size: 1.1rem;
+    }
+
+    &:hover {
+      border-color: rgba(0,255,136,0.4);
+      background: rgba(0,255,136,0.02);
+    }
+
+    h3 {
+      font-size: 1.45rem;
+      margin-bottom: 0.85rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    p { font-size: 0.95rem; }
+  }
+
+  .fd-step-num {
+    font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: $fd-green;
+    margin-bottom: 1.25rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  // ---------- FEATURE GRID ----------
+  .fd-feature {
+    padding: 1.75rem 1.5rem;
+    border-top: 1px solid $fd-border;
+    transition: border-color 0.2s ease;
+    height: 100%;
+
+    &:hover { border-top-color: $fd-green; }
+
+    h4 {
+      font-size: 1.1rem;
+      margin: 1rem 0 0.5rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+    }
+
+    p { font-size: 0.92rem; }
+  }
+
+  .fd-feature-icon {
+    width: 36px;
+    height: 36px;
+    color: $fd-green;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  }
+
+  // ---------- FINAL CTA ----------
+  .fd-cta-final {
+    padding: 8rem 1.5rem;
+    background: #000;
+    border-top: 1px solid $fd-border;
+    position: relative;
+
+    // Centered dot grid
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(0,255,136,0.10) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.7), transparent 65%);
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.7), transparent 65%);
+      pointer-events: none;
+    }
+
+    > .container { position: relative; z-index: 1; }
+
+    h2 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      margin-bottom: 1rem;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    p {
+      font-size: 1.05rem;
+      margin-bottom: 2.5rem;
+    }
+  }
+
+  // ---------- RESPONSIVE TWEAKS ----------
+  @media (max-width: 991px) {
+    .fd-iphone {
+      max-width: 280px;
+      margin: 2rem auto 0;
+      transform: rotateZ(-2deg); // calmer tilt when stacked under the copy
+    }
+  }
+
+  @media (max-width: 768px) {
+    .fd-hero { padding: 5rem 1.25rem 3rem; }
+    .fd-section { padding: 4.5rem 1.25rem; }
+    .fd-cta-final { padding: 5rem 1.25rem; }
+
+    .fd-ticker-item {
+      flex: 1 1 50%;
+      min-width: 0;
+      border-right: none;
+      border-bottom: 1px solid $fd-border;
+
+      &:nth-child(odd) { border-right: 1px solid $fd-border; }
+    }
+  }
+}
