@@ -3,19 +3,28 @@
     <span aria-hidden="true">←</span> All chats
   <% end %>
 
-  <header class="fd-chat-page-head">
+  <header class="fd-chat-page-head"
+          data-controller="inline-edit"
+          data-inline-edit-url-value="<%= chat_path(@chat) %>">
     <div class="fd-chat-page-head-titles">
       <span class="fd-eyebrow">
         <span class="fd-pulse-dot" aria-hidden="true"></span>
         Chat
       </span>
-      <h1 class="fd-chat-page-title">
+      <h1 class="fd-chat-page-title editable-title"
+          data-inline-edit-target="display"
+          data-action="click->inline-edit#startEdit">
         <% if @chat.title.present? %>
           <%= @chat.title %>
         <% else %>
           Chat <span class="fd-accent">#<%= @chat.id %></span>
         <% end %>
       </h1>
+      <input type="text"
+            class="fd-chat-page-title editable-input d-none"
+            data-inline-edit-target="input"
+            data-action="blur->inline-edit#save keydown->inline-edit#handleKeydown"
+            value="<%= @chat.title.presence || "Chat ##{@chat.id}" %>">
     </div>
     <nav class="fd-chat-page-head-actions" aria-label="Chat shortcuts">
       <%= link_to "Watchlist",   stocks_path,    class: "fd-btn fd-btn-ghost fd-btn-sm" %>

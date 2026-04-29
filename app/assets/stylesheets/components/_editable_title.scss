@@ -1,0 +1,40 @@
+.editable-title {
+  cursor: text;
+  padding: 0.25rem 0.75rem;
+  margin: -0.25rem -0.75rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.15s ease;
+  display: inline-block;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.editable-input {
+  // Match the visual size of fd-chat-page-title
+  background: transparent !important;
+  color: inherit !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  margin: -0.25rem -0.75rem;
+  width: 100%;
+  max-width: 600px;
+  outline: none;
+
+  // Inherit the heading's font size and weight from .fd-chat-page-title
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+
+  &:focus {
+    border-color: rgba(30, 221, 136, 0.6); // green accent matching fd-pulse-dot
+    box-shadow: 0 0 0 3px rgba(30, 221, 136, 0.15);
+  }
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+}
