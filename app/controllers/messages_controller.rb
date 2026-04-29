@@ -22,6 +22,9 @@ class MessagesController < ApplicationController
       response = chat_llm.ask(@message.content)
 
       @chat.messages.create(role: "assistant", content: response.content)
+
+      @chat.generate_title_from_first_message #line for chat title
+
       redirect_to chat_path(@chat)
     else
       render "chats/show", status: :unprocessable_entity
