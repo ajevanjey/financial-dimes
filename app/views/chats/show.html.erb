@@ -1,48 +1,84 @@
-<div class="container-lg py-3 py-md-4">
-  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-2">
-    <h1 class="mb-0">
-      <% if @chat.title.present? %>
-        <%= @chat.title %>
-      <% else %>
-        Chat #<%= @chat.id %>
-      <% end %>
-    </h1>
-    <%= link_to "← Back to chats", chats_path, class: "btn btn-outline-secondary btn-sm" %>
-  </div>
+<div class="fd-page fd-chat-page">
+  <%= link_to chats_path, class: "fd-btn fd-btn-ghost fd-btn-sm fd-page-back" do %>
+    <span aria-hidden="true">←</span> All chats
+  <% end %>
 
-  <div id="messages" class="mb-4">
-    <% @chat.messages.each do |message| %>
-      <% if message.role == "user" %>
-        <div class="d-flex justify-content-end mb-3">
-          <div class="bg-primary text-white p-3 rounded-3 shadow-sm" style="max-width: 85%;">
-            <%= simple_format(message.content) %>
+  <header class="fd-chat-page-head">
+    <div class="fd-chat-page-head-titles">
+      <span class="fd-eyebrow">
+        <span class="fd-pulse-dot" aria-hidden="true"></span>
+        Chat
+      </span>
+      <h1 class="fd-chat-page-title">
+        <% if @chat.title.present? %>
+          <%= @chat.title %>
+        <% else %>
+          Chat <span class="fd-accent">#<%= @chat.id %></span>
+        <% end %>
+      </h1>
+    </div>
+    <nav class="fd-chat-page-head-actions" aria-label="Chat shortcuts">
+      <%= link_to "Watchlist",   stocks_path,    class: "fd-btn fd-btn-ghost fd-btn-sm" %>
+      <%= link_to "+ Add stock", new_stock_path, class: "fd-btn fd-btn-primary fd-btn-sm" %>
+    </nav>
+  </header>
+
+  <div class="fd-chat-thread" id="messages">
+    <% if @chat.messages.any? %>
+      <% @chat.messages.each do |message| %>
+        <% if message.role == "user" %>
+          <div class="fd-chat-turn fd-chat-turn-user">
+            <div class="fd-chat-msg-bubble">
+              <%= simple_format(message.content) %>
+            </div>
           </div>
-        </div>
-      <% else %>
-        <div class="d-flex justify-content-start mb-3">
-          <div class="bg-white border p-3 rounded-3 shadow-sm" style="max-width: 85%;">
-            <strong class="text-primary d-block mb-1">
-              <i class="fas fa-robot me-1"></i> Assistant
-            </strong>
-            <%= simple_format(message.content) %>
+        <% else %>
+          <div class="fd-chat-turn fd-chat-turn-bot">
+            <div class="fd-chat-msg-author">
+              <span class="fd-chat-author-mark"><%= render "shared/brand_mark" %></span>
+              Financial Dimes
+            </div>
+            <div class="fd-chat-msg-text">
+              <%= simple_format(message.content) %>
+            </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
+    <% else %>
+      <div class="fd-chat-empty">
+        <div class="fd-chat-empty-mark" aria-hidden="true"><%= render "shared/brand_mark" %></div>
+        <h3>Start the conversation</h3>
+        <p>Ask about a stock, request a market read, or tell me one to add to your watchlist.</p>
+      </div>
     <% end %>
   </div>
 
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <%= simple_form_for [@chat, @message] do |f| %>
-        <%= f.input :content,
-                    label: false,
-                    placeholder: "Ask about a stock...",
-                    required: true,
-                    input_html: { rows: 3 } %>
-        <div class="d-flex justify-content-end">
-          <%= f.button :submit, "Send", class: "btn btn-primary btn-lg" %>
-        </div>
+  <div class="fd-chat-composer">
+    <%= simple_form_for [@chat, @message],
+                        html: {
+                          class: "fd-chat-composer-form",
+                          data: { controller: "chat-composer" }
+                        } do |f| %>
+      <%= f.input :content,
+                  label: false,
+                  placeholder: "Message Financial Dimes…",
+                  required: true,
+                  wrapper_html: { class: "fd-chat-composer-field" },
+                  input_html: {
+                    rows: 1,
+                    class: "fd-chat-composer-input",
+                    data: {
+                      chat_composer_target: "input",
+                      action: "keydown->chat-composer#submitOnEnter input->chat-composer#autoGrow"
+                    }
+                  } %>
+      <%= button_tag type: "submit", class: "fd-chat-composer-send", title: "Send" do %>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2" fill="currentColor"/>
+        </svg>
+        <span class="visually-hidden">Send</span>
       <% end %>
-    </div>
+    <% end %>
   </div>
 </div>

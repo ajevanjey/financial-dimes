@@ -41,26 +41,6 @@
     </div>
   </div>
 
-  <%# ---------- TOP NAV ---------- %>
-  <nav class="fd-nav">
-    <div class="container fd-nav-inner">
-      <%= link_to root_path, class: "fd-nav-brand" do %>
-        <span class="fd-nav-mark"><%= render "shared/brand_mark" %></span>
-        Financial Dimes
-      <% end %>
-
-      <div class="fd-nav-links">
-        <% if user_signed_in? %>
-          <%= link_to "Chat", chats_path, class: "fd-nav-link" %>
-          <%= link_to "Watchlist", stocks_path, class: "fd-nav-link" %>
-          <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "fd-nav-link" %>
-        <% else %>
-          <%= link_to "Sign in", new_user_session_path, class: "fd-nav-link" %>
-        <% end %>
-      </div>
-    </div>
-  </nav>
-
   <%# ---------- HERO ---------- %>
   <section class="fd-hero">
     <div class="container">

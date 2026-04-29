@@ -17,7 +17,18 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="fd-body">
+    <%= render "shared/navbar" %>
+
+    <% if notice.present? %>
+      <div class="fd-flash fd-flash-notice"><%= notice %></div>
+    <% end %>
+    <% if alert.present? %>
+      <div class="fd-flash fd-flash-alert"><%= alert %></div>
+    <% end %>
+
+    <main class="fd-main">
+      <%= yield %>
+    </main>
   </body>
 </html>
