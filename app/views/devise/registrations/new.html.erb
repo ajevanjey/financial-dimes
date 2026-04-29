@@ -1,0 +1,33 @@
+<div class="fd-auth">
+  <div class="fd-auth-card">
+    <div class="fd-auth-head">
+      <span class="fd-eyebrow">
+        <span class="fd-pulse-dot" aria-hidden="true"></span>
+        Get started
+      </span>
+      <h1>Create your <span class="fd-accent">free</span> account.</h1>
+      <p>No card. No trial. Free now, free later.</p>
+    </div>
+
+    <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= f.input :email,
+                  required: true,
+                  autofocus: true,
+                  input_html: { autocomplete: "email" } %>
+      <%= f.input :password,
+                  required: true,
+                  hint: "#{Devise.password_length.min} characters minimum.",
+                  input_html: { autocomplete: "new-password" } %>
+      <%= f.input :password_confirmation,
+                  required: true,
+                  input_html: { autocomplete: "new-password" } %>
+      <div class="fd-auth-submit">
+        <%= f.submit "Create account", class: "fd-btn fd-btn-primary fd-btn-lg" %>
+      </div>
+    <% end %>
+
+    <div class="fd-auth-footer">
+      Already have an account? <%= link_to "Log in", new_session_path(resource_name), class: "fd-link-accent" %>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,16 @@
-<div class="container my-5" style="max-width: 600px;">
-  <%= link_to "← Back to watchlist", stocks_path, class: "text-decoration-none small text-muted" %>
-  <h1 class="mt-2 mb-4">Edit <%= @stock.ticker.upcase %></h1>
+<div class="fd-page" style="max-width: 600px;">
+  <%= link_to stocks_path, class: "fd-back-link" do %>
+    ← Back to watchlist
+  <% end %>
 
-  <%= render "form" %>
+  <div class="fd-page-head">
+    <h1>Edit <span class="fd-tkr-badge"><%= @stock.ticker.upcase %></span></h1>
+    <div class="fd-page-head-actions">
+      <%= link_to "Back to chat", chats_path, class: "fd-btn fd-btn-ghost" %>
+    </div>
+  </div>
+
+  <div class="fd-form">
+    <%= render "form" %>
+  </div>
 </div>

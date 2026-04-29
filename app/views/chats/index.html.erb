@@ -19,29 +19,25 @@
 
   <% if @chats.any? %>
     <% @chats.each do |chat| %>
-      <%= link_to chat_path(chat), class: "fd-card-link" do %>
-        <div class="fd-card">
-          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <div>
-              <h4 class="mb-1">
-                <% if chat.title.present? %>
-                  <%= chat.title %>
-                <% else %>
-                  Chat #<%= chat.id %>
-                <% end %>
-              </h4>
-              <p class="mb-0" style="font-size: 0.85rem;">
-                <%= chat.messages.count %> message<%= "s" if chat.messages.count != 1 %>
-                <span style="opacity: 0.5;"> · </span>
-                <%= chat.created_at.strftime("%b %d, %Y") %>
-              </p>
-            </div>
-            <div onclick="event.preventDefault(); event.stopPropagation();">
-              <%= button_to "Delete", chat_path(chat), method: :delete, class: "fd-btn fd-btn-danger fd-btn-sm", form: { class: "fd-btn-form", data: { turbo_confirm: "Delete this chat?" } } %>
-            </div>
-          </div>
+      <div class="fd-card fd-chat-card">
+        <%= link_to chat_path(chat), class: "fd-chat-card-link" do %>
+          <h4 class="mb-1">
+            <% if chat.title.present? %>
+              <%= chat.title %>
+            <% else %>
+              Chat #<%= chat.id %>
+            <% end %>
+          </h4>
+          <p class="mb-0" style="font-size: 0.85rem;">
+            <%= chat.messages.count %> message<%= "s" if chat.messages.count != 1 %>
+            <span style="opacity: 0.5;"> · </span>
+            <%= chat.created_at.strftime("%b %d, %Y") %>
+          </p>
+        <% end %>
+        <div class="fd-chat-card-actions">
+          <%= button_to "Delete", chat_path(chat), method: :delete, class: "fd-btn fd-btn-danger fd-btn-sm", form: { class: "fd-btn-form", data: { turbo_confirm: "Delete this chat?" } } %>
         </div>
-      <% end %>
+      </div>
     <% end %>
   <% else %>
     <div class="fd-empty-state">

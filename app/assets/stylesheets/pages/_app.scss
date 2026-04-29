@@ -215,8 +215,9 @@
 
   p { color: $fd-text-muted; line-height: 1.6; }
 
-  a { color: $fd-green; text-decoration: none; }
-  a:hover { color: $fd-green-soft; }
+  // Plain links — but NOT buttons or card-links, which manage their own colors.
+  a:not(.fd-btn):not(.fd-card-link) { color: $fd-green; text-decoration: none; }
+  a:not(.fd-btn):not(.fd-card-link):hover { color: $fd-green-soft; }
 }
 
 .fd-page-head {
@@ -323,6 +324,47 @@
   &:hover { color: $fd-white; }
 }
 
+// ---- Chat row (link + delete button as siblings, valid HTML) ----
+.fd-chat-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.fd-chat-card-link {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  color: $fd-white;
+  text-decoration: none;
+
+  h4 { color: $fd-white; transition: color 0.15s ease; }
+  p  { color: $fd-text-muted; }
+
+  // Stretched-link: a transparent overlay covering the whole card so the
+  // empty space between the title and the Delete button is also clickable.
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+  }
+
+  &:hover {
+    color: $fd-white;
+    h4 { color: $fd-green; }
+  }
+}
+
+.fd-chat-card-actions {
+  position: relative;
+  z-index: 2;          // sits above the stretched-link overlay
+  flex-shrink: 0;
+}
+
 // ---------- STOCKS / WATCHLIST ----------
 .fd-stocks-table {
   width: 100%;
@@ -370,6 +412,186 @@
   font-weight: 700;
   letter-spacing: 0.04em;
 }
+
+// ---------- AUTH PAGES (Devise: sign in / sign up / password reset) ----------
+// Centered card on a black canvas. Re-uses the homepage's eyebrow/accent
+// language so the auth flow feels like one continuous product.
+.fd-auth {
+  min-height: calc(100vh - 70px); // ≈ navbar height
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+.fd-auth-card {
+  width: 100%;
+  max-width: 460px;
+  background: #0A0A0A;
+  border: 1px solid $fd-border;
+  border-radius: 14px;
+  padding: 2.75rem 2.5rem;
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.6);
+
+  // ----- form fields (simple_form-bootstrap output) -----
+  label,
+  .form-label,
+  .control-label {
+    color: $fd-white;
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  input[type="email"],
+  input[type="password"],
+  input[type="text"],
+  .form-control {
+    background: #050505;
+    border: 1px solid $fd-border;
+    color: $fd-white;
+    border-radius: 6px;
+    padding: 0.75rem 0.95rem;
+    font-family: $body-font;
+    font-size: 0.95rem;
+    width: 100%;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &::placeholder { color: rgba(255, 255, 255, 0.3); }
+    &:focus {
+      outline: none;
+      border-color: $fd-green;
+      box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.15);
+    }
+  }
+
+  .form-group, .mb-3 { margin-bottom: 1.2rem; }
+
+  // Devise rememberable checkbox (simple_form boolean → .form-check)
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 1.4rem;
+
+    .form-check-input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: $fd-green;
+      cursor: pointer;
+    }
+
+    .form-check-label {
+      margin: 0;
+      font-size: 0.9rem;
+      color: $fd-text-muted;
+      cursor: pointer;
+    }
+  }
+
+  // simple_form hint text
+  .form-text, .help-block {
+    color: $fd-text-muted;
+    font-size: 0.78rem;
+    margin-top: 0.35rem;
+  }
+
+  // Inline validation errors
+  .invalid-feedback {
+    color: $fd-red;
+    font-size: 0.82rem;
+    margin-top: 0.35rem;
+  }
+
+  // Devise's #error_explanation panel (when shown above form)
+  #error_explanation,
+  .error_messages {
+    background: rgba(253, 16, 21, 0.08);
+    border: 1px solid rgba(253, 16, 21, 0.4);
+    color: $fd-red;
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.88rem;
+
+    h2 {
+      font-size: 0.95rem;
+      margin: 0 0 0.4rem;
+      color: $fd-red;
+    }
+
+    ul { margin: 0; padding-left: 1.1rem; }
+  }
+}
+
+.fd-auth-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 2.25rem;
+
+  h1 {
+    font-family: $headers-font;
+    font-size: clamp(1.7rem, 3vw, 2.1rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin: 0;
+    color: $fd-white;
+  }
+
+  p {
+    margin: 0;
+    color: $fd-text-muted;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+}
+
+.fd-auth-submit {
+  margin-top: 0.5rem;
+
+  .fd-btn,
+  input[type="submit"] { width: 100%; }
+}
+
+.fd-auth-footer {
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid $fd-border;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  align-items: center;
+  text-align: center;
+  color: $fd-text-muted;
+  font-size: 0.88rem;
+
+  a {
+    color: $fd-text-muted;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+      color: $fd-white;
+      border-bottom-color: rgba(255, 255, 255, 0.3);
+    }
+
+    // Green accent variant for "Create an account" / "Log in" inline links.
+    &.fd-link-accent {
+      color: $fd-green;
+
+      &:hover {
+        color: $fd-green-soft;
+        border-bottom-color: rgba(0, 255, 136, 0.4);
+      }
+    }
+  }
+}
+
 
 .fd-empty-state {
   text-align: center;
@@ -429,78 +651,274 @@
   .form-group, .mb-3 { margin-bottom: 1.2rem; }
 }
 
-// ---------- CHAT VIEW ----------
-.fd-chat-thread {
-  background: #0A0A0A;
-  border: 1px solid $fd-border;
-  border-radius: 14px;
-  padding: 1.5rem;
-  min-height: 360px;
+// ---------- CHAT VIEW (LLM-platform feel) ----------
+//
+// The chat show page is intentionally NOT a card. The conversation flows in a
+// centered column with no border around it; the composer sticks to the bottom
+// of the viewport like ChatGPT / Claude / Perplexity.
+
+.fd-chat-page {
+  // breathing room so the last message isn't hidden under the sticky composer
+  padding-bottom: 9rem;
+}
+
+.fd-chat-page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid $fd-border;
+}
+
+.fd-chat-page-head-titles {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 0.85rem;
+  min-width: 0;
 }
 
-.fd-chat-row {
+.fd-chat-page-title {
+  font-family: $headers-font;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin: 0;
+  color: $fd-white;
+  word-break: break-word;
+}
+
+.fd-chat-page-head-actions {
   display: flex;
-
-  &.fd-chat-row-user { justify-content: flex-end; }
-  &.fd-chat-row-bot  { justify-content: flex-start; }
-}
-
-.fd-chat-bubble-msg {
-  max-width: 75%;
-  padding: 0.85rem 1.1rem;
-  border-radius: 14px;
-  font-size: 0.95rem;
-  line-height: 1.5;
-
-  .fd-chat-row-user & {
-    background: $fd-green;
-    color: #000;
-    border-top-right-radius: 4px;
-    font-weight: 500;
-  }
-
-  .fd-chat-row-bot & {
-    background: rgba(255, 255, 255, 0.05);
-    color: $fd-white;
-    border-top-left-radius: 4px;
-    border: 1px solid $fd-border;
-  }
-}
-
-.fd-chat-author {
-  display: flex;
+  gap: 1.25rem;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.75rem;
+}
+
+.fd-chat-page-head-link {
+  color: $fd-text-muted;
+  font-size: 0.86rem;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    color: $fd-white;
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+// ---- conversation thread ----
+.fd-chat-thread {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  max-width: 760px;
+  margin: 0 auto 2rem;
+}
+
+.fd-chat-turn {
+  display: flex;
+
+  &.fd-chat-turn-user { justify-content: flex-end; }
+  &.fd-chat-turn-bot  { flex-direction: column; gap: 0.5rem; align-items: stretch; }
+}
+
+// User message: subtle dark bubble, right-aligned
+.fd-chat-msg-bubble {
+  max-width: 80%;
+  padding: 0.85rem 1.15rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: $fd-white;
+  border-radius: 18px;
+  border-top-right-radius: 6px;
+  font-size: 0.96rem;
+  line-height: 1.55;
+
+  p { margin: 0 0 0.5rem; &:last-child { margin: 0; } }
+}
+
+// Bot message: NO bubble — just author tag + flowing text
+.fd-chat-msg-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.78rem;
   font-weight: 600;
-  color: $fd-green;
-  margin-bottom: 0.4rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  color: $fd-text-muted;
+  letter-spacing: 0.04em;
+  text-transform: none;
 }
 
 .fd-chat-author-mark {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
 
   .fd-mark { width: 100%; height: 100%; display: block; }
 }
 
-.fd-chat-input-wrap {
-  background: #0A0A0A;
-  border: 1px solid $fd-border;
-  border-radius: 14px;
-  padding: 1.25rem;
+.fd-chat-msg-text {
+  color: $fd-white;
+  font-size: 0.99rem;
+  line-height: 1.65;
+  // align text under author label (icon width + gap)
+  padding-left: calc(20px + 0.55rem);
+
+  p {
+    margin: 0 0 0.85rem;
+    &:last-child { margin: 0; }
+  }
+
+  a { color: $fd-green; text-decoration: underline; text-decoration-color: rgba(0, 255, 136, 0.4); text-underline-offset: 3px; }
+  a:hover { text-decoration-color: $fd-green; }
 }
 
+// Empty-state on a fresh chat
 .fd-chat-empty {
   text-align: center;
   color: $fd-text-muted;
-  padding: 3rem 1rem;
+  padding: 4.5rem 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+
+  .fd-chat-empty-mark {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    opacity: 0.85;
+
+    .fd-mark { width: 100%; height: 100%; display: block; }
+  }
+
+  h3 {
+    color: $fd-white;
+    font-family: $headers-font;
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+
+  p { margin: 0; max-width: 420px; }
+}
+
+// ---- composer (sticky, single-row, focus-ring) ----
+.fd-chat-composer {
+  position: sticky;
+  bottom: 1.25rem;
+  max-width: 760px;
+  margin: 0 auto;
+  z-index: 5;
+}
+
+.fd-chat-composer-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.6rem;
+  background: rgba(10, 10, 10, 0.85);
+  border: 1px solid $fd-border;
+  border-radius: 18px;
+  padding: 0.6rem 0.65rem 0.6rem 0.95rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 18px 32px -16px rgba(0, 0, 0, 0.55);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:focus-within {
+    border-color: rgba(0, 255, 136, 0.55);
+    box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.14),
+                0 18px 32px -16px rgba(0, 0, 0, 0.6);
+  }
+
+  // simple_form wrapper around the textarea
+  .fd-chat-composer-field {
+    flex: 1;
+    margin: 0;
+    min-width: 0;
+  }
+
+  // Defeat the heavier .fd-form textarea styling — composer textareas are flat.
+  textarea,
+  .fd-chat-composer-input {
+    background: transparent !important;
+    border: none !important;
+    color: $fd-white;
+    font-family: $body-font;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    resize: none;
+    width: 100%;
+    padding: 0.55rem 0;
+    box-shadow: none !important;
+    min-height: 24px;
+    max-height: 200px;
+    overflow-y: auto;
+
+    &:focus { outline: none; box-shadow: none !important; }
+    &::placeholder { color: rgba(255, 255, 255, 0.36); }
+  }
+}
+
+.fd-chat-composer-send {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: $fd-green;
+  color: #000;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+
+  &:hover {
+    background: lighten($fd-green, 4%);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(0, 255, 136, 0.6);
+    outline-offset: 2px;
+  }
+
+  svg { display: block; }
+}
+
+// Bootstrap "visually-hidden" — included in case the project doesn't already have it.
+// Safe to define globally; it's the standard a11y utility.
+.visually-hidden:not(:focus):not(:active) {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+@media (max-width: 600px) {
+  .fd-chat-page { padding-bottom: 8rem; }
+  .fd-chat-composer { bottom: 0.75rem; }
+  .fd-chat-msg-bubble { max-width: 92%; }
+  .fd-chat-page-head-actions { gap: 1rem; }
 }

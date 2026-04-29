@@ -1,0 +1,33 @@
+<div class="fd-auth">
+  <div class="fd-auth-card">
+    <div class="fd-auth-head">
+      <span class="fd-eyebrow">
+        <span class="fd-pulse-dot" aria-hidden="true"></span>
+        Reset
+      </span>
+      <h1>Choose a new <span class="fd-accent">password</span>.</h1>
+      <p>You're almost done.</p>
+    </div>
+
+    <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+      <%= f.input :reset_password_token, as: :hidden %>
+      <%= f.input :password,
+                  required: true,
+                  autofocus: true,
+                  label: "New password",
+                  hint: "#{Devise.password_length.min} characters minimum.",
+                  input_html: { autocomplete: "new-password" } %>
+      <%= f.input :password_confirmation,
+                  required: true,
+                  label: "Confirm new password",
+                  input_html: { autocomplete: "new-password" } %>
+      <div class="fd-auth-submit">
+        <%= f.submit "Update password", class: "fd-btn fd-btn-primary fd-btn-lg" %>
+      </div>
+    <% end %>
+
+    <div class="fd-auth-footer">
+      <%= link_to "Back to login", new_session_path(resource_name) %>
+    </div>
+  </div>
+</div>

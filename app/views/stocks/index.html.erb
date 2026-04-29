@@ -1,16 +1,19 @@
-<div class="container my-5">
-  <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="fd-page">
+  <div class="fd-page-head">
     <h1>My Watchlist</h1>
-    <%= link_to "+ Add a stock", new_stock_path, class: "btn btn-primary" %>
+    <div class="fd-page-head-actions">
+      <%= link_to "Back to chat", chats_path, class: "fd-btn fd-btn-ghost" %>
+      <%= link_to "+ Add a stock", new_stock_path, class: "fd-btn fd-btn-primary" %>
+    </div>
   </div>
 
   <% if @stocks.any? %>
-    <table class="table table-hover">
+    <table class="fd-stocks-table">
       <thead>
         <tr>
           <th>Ticker</th>
           <th>Company</th>
-          <th>Target price</th>
+          <th>Target</th>
           <th>Notes</th>
           <th></th>
         </tr>
@@ -18,23 +21,23 @@
       <tbody>
         <% @stocks.each do |stock| %>
           <tr>
-            <td><strong><%= stock.ticker.upcase %></strong></td>
+            <td><span class="fd-tkr-badge"><%= stock.ticker.upcase %></span></td>
             <td><%= stock.company_name %></td>
             <td><%= number_to_currency(stock.target_price) if stock.target_price %></td>
-            <td><%= truncate(stock.notes, length: 50) %></td>
+            <td><span style="color: #A0A0A0;"><%= truncate(stock.notes.to_s, length: 40) %></span></td>
             <td class="text-end">
-              <%= link_to "View", stock_path(stock), class: "btn btn-sm btn-outline-secondary" %>
-              <%= link_to "Edit", edit_stock_path(stock), class: "btn btn-sm btn-outline-secondary" %>
-              <%= button_to "Remove", stock_path(stock), method: :delete, class: "btn btn-sm btn-outline-danger", form: { class: "d-inline", data: { turbo_confirm: "Remove #{stock.ticker.upcase} from your watchlist?" } } %>
+              <%= link_to "View", stock_path(stock), class: "fd-btn fd-btn-ghost fd-btn-sm" %>
+              <%= link_to "Edit", edit_stock_path(stock), class: "fd-btn fd-btn-ghost fd-btn-sm" %>
+              <%= button_to "Remove", stock_path(stock), method: :delete, class: "fd-btn fd-btn-danger fd-btn-sm", form: { class: "fd-btn-form", data: { turbo_confirm: "Remove #{stock.ticker.upcase}?" } } %>
             </td>
           </tr>
         <% end %>
       </tbody>
     </table>
   <% else %>
-    <div class="text-center py-5">
-      <p class="text-muted">You're not watching any stocks yet.</p>
-      <%= link_to "Add your first stock", new_stock_path, class: "btn btn-primary" %>
+    <div class="fd-empty-state">
+      <p>You're not watching any stocks yet.</p>
+      <%= link_to "Add your first stock", new_stock_path, class: "fd-btn fd-btn-primary fd-btn-lg" %>
     </div>
   <% end %>
 </div>

@@ -1,0 +1,26 @@
+<div class="fd-auth">
+  <div class="fd-auth-card">
+    <div class="fd-auth-head">
+      <span class="fd-eyebrow">
+        <span class="fd-pulse-dot" aria-hidden="true"></span>
+        Reset
+      </span>
+      <h1>Forgot your <span class="fd-accent">password</span>?</h1>
+      <p>Enter your email and we'll send you a reset link.</p>
+    </div>
+
+    <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name)) do |f| %>
+      <%= f.input :email,
+                  required: true,
+                  autofocus: true,
+                  input_html: { autocomplete: "email" } %>
+      <div class="fd-auth-submit">
+        <%= f.submit "Send reset instructions", class: "fd-btn fd-btn-primary fd-btn-lg" %>
+      </div>
+    <% end %>
+
+    <div class="fd-auth-footer">
+      <%= link_to "Back to login", new_session_path(resource_name) %>
+    </div>
+  </div>
+</div>

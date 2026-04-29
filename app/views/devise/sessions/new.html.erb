@@ -1,0 +1,37 @@
+<div class="fd-auth">
+  <div class="fd-auth-card">
+    <div class="fd-auth-head">
+      <span class="fd-eyebrow">
+        <span class="fd-pulse-dot" aria-hidden="true"></span>
+        Sign in
+      </span>
+      <h1>Welcome <span class="fd-accent">back</span>.</h1>
+      <p>Pick up where you left off.</p>
+    </div>
+
+    <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <%= f.input :email,
+                  required: true,
+                  autofocus: true,
+                  input_html: { autocomplete: "email" } %>
+      <%= f.input :password,
+                  required: true,
+                  input_html: { autocomplete: "current-password" } %>
+      <% if devise_mapping.rememberable? %>
+        <%= f.input :remember_me, as: :boolean, label: "Remember me" %>
+      <% end %>
+      <div class="fd-auth-submit">
+        <%= f.submit "Log in", class: "fd-btn fd-btn-primary fd-btn-lg" %>
+      </div>
+    <% end %>
+
+    <div class="fd-auth-footer">
+      <% if devise_mapping.recoverable? %>
+        <%= link_to "Forgot your password?", new_password_path(resource_name) %>
+      <% end %>
+      <% if devise_mapping.registerable? %>
+        <span>New to Financial Dimes? <%= link_to "Create an account", new_registration_path(resource_name), class: "fd-link-accent" %></span>
+      <% end %>
+    </div>
+  </div>
+</div>
