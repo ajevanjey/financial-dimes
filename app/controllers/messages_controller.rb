@@ -9,12 +9,19 @@ class MessagesController < ApplicationController
     @message.role = "user"
 
     if @message.save
-      response = RubyLLM.chat(model: "gpt-4o-mini")
+      # Créer le chat RubyLLM avec les instructions
+      chat_llm = RubyLLM.chat(model: "gpt-4o-mini")
         .with_instructions(SYSTEM_PROMPT)
-        .ask(@message.content)
+
+      # Charger tout l'historique des messages précédents
+      @chat.messages.where.not(id: @message.id).each do |msg|
+        chat_llm.ask(msg.content)
+      end
+
+      # Poser la nouvelle question
+      response = chat_llm.ask(@message.content)
 
       @chat.messages.create(role: "assistant", content: response.content)
-
       redirect_to chat_path(@chat)
     else
       render "chats/show", status: :unprocessable_entity
